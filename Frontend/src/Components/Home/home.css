@@ -1,0 +1,76 @@
+span.title-add-todo{
+    font-size: 2em;
+    font-weight: bold;
+    color: var(--my-black);
+}
+
+.home-container{
+    display: flex;
+    flex-direction: column;
+    margin: 10px auto;
+    width: 70%;
+    border: 1px solid var(--my-black);
+    background-color: white;
+    padding: 20px;
+    border-radius: 2px;
+}
+
+.home-container label{
+    margin: 10px 0;
+    color: var(--my-black);
+}
+
+.home-container input{
+    margin: 5px 0;
+    border: 1px solid var(--my-black);
+    height: 35px;
+    padding: 5px;
+    justify-content: center;
+}
+
+button.btn-add-todo{
+    border: none;
+    border-radius: 2px;
+    margin: 10px 0;
+    background-color: var(--my-black);
+    color: white;
+    font-size: 1.4em;
+    padding: 5px;
+}
+
+table.todos-table{
+    border: 1px solid var(--my-black);
+    border-collapse: collapse;
+}
+
+table.todos-table tr th{
+    background-color: var(--my-black);
+    color: white;
+    border: 1px solid var(--my-black);
+    padding: 5px;
+}
+table.todos-table tr td{
+    border: 1px solid var(--my-black);
+    padding: 5px;
+}
+
+th.td-th-center, td.td-th-center{
+    text-align: center;
+}
+
+table.todos-table tr:nth-child(odd){
+    background-color: #f2f0f0;
+}
+
+table.todos-table tr:nth-child(even){
+    background-color: rgb(224, 221, 221);
+}
+
+button.btn-todo-action{
+    background-color: var(--my-black);
+    color: white;
+    border: none;
+    border-radius: 2px;
+    margin: 0 2px;
+    padding: 2px;
+}

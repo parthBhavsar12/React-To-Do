@@ -1,0 +1,83 @@
+body{
+    background-color: rgb(229, 229, 229);
+}
+
+.form-container{
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid var(--my-black);
+    border-radius: 2px;
+    padding: 10px;
+    background-color: white !important;
+    color: var(--my-black);
+}
+
+.auth-nav{
+    width: 100%;
+    display: flex;
+}
+
+a.btn-auth-nav{
+    background-color: var(--my-black);
+    color: white;
+    font-size: 1.4em;
+    text-decoration: none;
+    width: 50%;
+    text-align: center;
+    border-radius: 2px;
+    border: 1px solid white;
+    padding: 5px;
+}
+
+a.btn-auth-nav:hover{
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.form-container label{
+    margin: 10px;
+    color: var(--my-black);
+}
+
+.form-container input{
+    margin: 5px 10px;
+    color: var(--my-black);
+    border: 1px solid var(--my-black);
+    height: 35px;
+    padding: 5px;
+    justify-content: center;
+}
+
+form.form-auth{
+    display: flex;
+    flex-direction: column;
+}
+
+button.btn-submit{
+    border: none;
+    border-radius: 2px;
+    margin: 10px;
+    background-color: var(--my-black);
+    color: white;
+    font-size: 1.4em;
+    padding: 5px;
+}
+
+a.auth-active-nav{
+    text-decoration: underline;
+}
+
+.show-password{
+    display: flex;
+    align-items: center;
+    user-select: none;
+}
+
+input[type="checkbox"]{
+    accent-color: var(--my-black);
+}
