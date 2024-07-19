@@ -18,6 +18,7 @@ const home = () => {
                 <button className="btn-add-todo">Add</button>
             </div>
             <div className="home-container">
+                <span className="title-add-todo">Your To-Dos</span>
                 <table className="todos-table">
                     <thead>
                         <tr>

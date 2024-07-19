@@ -15,7 +15,7 @@ const msg = (props) => {
         <div className={props.msgClass} id="msg-box" ref={msg}>
             <strong className="msg-title">{props.title}</strong>
             <span className="msg-text">{props.text}</span>
-            <button className="close-msgbox" onClick={closeMsgbox}>Close</button>
+            <button className="close-msgbox" onClick={closeMsgbox}>OK</button>
         </div>
         {/* <div className={"green"} id="msg-box" ref={msg}>
             <strong className="msg-title">Success</strong>

@@ -40,16 +40,30 @@ const login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
-        email: email,
-        password: password
-      });
-
-      console.log(response.data);
+      const response = await axios.post(
+        'http://localhost:5000/api/auth/login',
+        { email, password },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        }
+      );
+      console.log(response.data.msg);
+      console.log(response.data.token);
       navigate('/home');
     } catch (error) {
-      console.error(error.response.data);
-      setError(error.response.data.msg)
+      if (error.response) {
+        console.error('Error response:', error.response.data);
+        setError(error.response.data.msg || "Something gone wrong.");
+      } else if (error.request) {
+        console.error('Error request:', error.request);
+        setError('No response received from server');
+      } else {
+        console.error('Error message:', error.message);
+        setError('Error: ' + error.message);
+      }
     }
   };
 

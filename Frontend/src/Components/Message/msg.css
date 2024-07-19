@@ -52,6 +52,7 @@ button.close-msgbox{
     border: none;
     padding: 10px;
     color: white;
+    width: 25%;
 }
 
 .green button.close-msgbox{
