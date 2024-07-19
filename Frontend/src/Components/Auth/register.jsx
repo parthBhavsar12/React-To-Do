@@ -1,9 +1,11 @@
 import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Message from '../Message/msg';
 
 const Register = () => {
+
+    const navigate = useNavigate();
 
     const [msg, setMsg] = useState('');
     const [error, setError] = useState('');
@@ -48,8 +50,11 @@ const Register = () => {
                 password: password
             });
 
-            console.log(response.data); // Handle the response from the server
+            // console.log(response.data); // Handle the response from the server
             setMsg("Registered successfully.")
+            setTimeout(
+                () => {navigate('/login')}
+            ,1500);
         } catch (error) {
             console.error(error.response.data); // Handle errors
             setError(error.response.data.msg)

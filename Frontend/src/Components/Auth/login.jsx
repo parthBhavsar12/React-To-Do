@@ -50,8 +50,8 @@ const login = () => {
           withCredentials: true,
         }
       );
-      console.log(response.data.msg);
-      console.log(response.data.token);
+      // console.log(response.data.msg);
+      // console.log(response.data.token);
       navigate('/home');
     } catch (error) {
       if (error.response) {

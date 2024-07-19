@@ -26,7 +26,7 @@ router.post('/add-todo', async (req, res) => {
 // Route to fetch all to-dos for a specific user
 router.get('/fetch-todos', async (req, res) => {
     try {
-        console.log(req);
+        // console.log(req);
         const email = req.query.email;
 
         const todos = await Todo.find({ email });
@@ -56,5 +56,18 @@ router.delete('/delete-todo/:id', async (req, res) => {
     }
 });
 
+// Update an existing to-do
+router.put('/update-todo/:id', async (req, res) => {
+    try {
+        const { txtTodo } = req.body;
+        const { id } = req.params;
+        const updatedTodo = await Todo.findByIdAndUpdate(id, { txtTodo }, { new: true });
+        const todos = await Todo.find({ email: updatedTodo.email });
+        res.status(200).json({ todos });
+    } catch (error) {
+        console.error('Error updating todo:', error);
+        res.status(500).json({ message: 'Failed to update to-do.' });
+    }
+});
 
 module.exports = router;

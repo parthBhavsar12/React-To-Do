@@ -60,7 +60,7 @@ const Home = () => {
             fetchTodos();
         } catch (error) {
             console.error('Error submitting todo:', error);
-            setError('Something gone wrong.');
+            setError('Something went wrong.');
         }
     };
 
@@ -103,8 +103,7 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-        if(email){
-            fetchUserDetails();
+        if (email) {
             fetchTodos();
         }
     }, [email]);
