@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const connectDB = require('./config/db');
 
 const app = express();
@@ -10,6 +11,7 @@ connectDB();
 
 // Middleware
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 // Enable CORS
 app.use(cors({
@@ -21,6 +23,7 @@ app.use(cors({
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/todo', require('./routes/todo'));
 
 const PORT = process.env.PORT || 5000;
 

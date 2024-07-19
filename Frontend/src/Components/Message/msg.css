@@ -1,25 +1,26 @@
 #msg-box{
     display: flex;
-    position: relative;
-    z-index: 1;
-    width: 50%;
-    margin: 25px auto;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    justify-content: center;
 }
 
 .green{
-    border: 2px solid green;
+    border: 2px solid #5fac5f;
 }
 
 .red{
-    border: 2px solid red;
+    border: 2px solid darkred;
 }
 
 strong.msg-title{
     font-weight: bold;
     color: white;
     padding: 10px;
-    width: 30%;
-    text-align: center;
 }
 
 .green strong.msg-title{
@@ -27,23 +28,19 @@ strong.msg-title{
 }
 
 .red strong.msg-title{
-    background-color: red;
+    background-color: darkred;
 }
 
 span.msg-text{
     padding: 10px;
-    width: 100%;
-    text-align: center;
 }
 
 .green span.msg-text{
-    border-left: 2px solid green;
     background-color: #aaf5aa;
     color: darkgreen;
 }
 
 .red span.msg-text{
-    border-left: 2px solid red;
     background-color: #f5aaaa;
     color: darkred;
 }
@@ -52,11 +49,10 @@ button.close-msgbox{
     border: none;
     padding: 10px;
     color: white;
-    width: 25%;
 }
 
 .green button.close-msgbox{
-    background-color: darkgreen;
+    background-color: green;
 }
 
 .red button.close-msgbox{

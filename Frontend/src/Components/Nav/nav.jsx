@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Message from '../Message/msg';
 import axios from 'axios';
+import Message from '../Message/msg';
 import './nav.css';
 
 const Nav = () => {
   const navigate = useNavigate();
-
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [error, setError] = useState('');
 
   const handleLogout = async () => {
@@ -16,16 +17,32 @@ const Nav = () => {
       navigate('/login');
     } catch (error) {
       console.error('Logout failed:', error);
-      setError("Something gone wrong.");
+      setError('Something went wrong.');
     }
   };
+
+  const fetchUserDetails = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/auth/user', { withCredentials: true });
+      setEmail(response.data.email);
+      setName(response.data.username);
+    } catch (error) {
+      console.error('Failed to fetch user details:', error);
+      setError('Failed to fetch user details.');
+    }
+  };
+
+  useEffect(() => {
+    fetchUserDetails();
+  }, []);
 
   return (
     <>
       <nav>
         <ul className="nav-ul">
           <li className="nav-li">React - To Do</li>
-          <li className="nav-li">Hello, User</li>
+          {name && <li className="nav-li">Hello, {name}</li>}
+          <li className="nav-li">{email ? email : 'Loading...'}</li>
           <button className="btn-logout" onClick={handleLogout}>Logout</button>
         </ul>
       </nav>

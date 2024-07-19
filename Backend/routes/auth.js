@@ -1,23 +1,12 @@
 const express = require('express');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-const app = express();
-
-// Middleware
-app.use(express.json());
-app.use(cookieParser());
-
-// CORS configuration
-app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true,
-}));
-
 const router = express.Router();
+
+// Environment variables
+const jwtSecret = process.env.JWT_SECRET || 'yourSecretToken'; // Use environment variable
 
 // Register route
 router.post('/register', async (req, res) => {
@@ -46,8 +35,11 @@ router.post('/register', async (req, res) => {
       },
     };
 
-    jwt.sign(payload, 'yourSecretToken', { expiresIn: 3600 }, (err, token) => {
-      if (err) throw err;
+    jwt.sign(payload, jwtSecret, { expiresIn: '1h' }, (err, token) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ msg: 'Server error' });
+      }
       res.json({ token });
     });
   } catch (err) {
@@ -77,11 +69,14 @@ router.post('/login', async (req, res) => {
       },
     };
 
-    jwt.sign(payload, 'yourSecretToken', { expiresIn: 3600 }, (err, token) => {
-      if (err) throw err;
+    jwt.sign(payload, jwtSecret, { expiresIn: '1h' }, (err, token) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ msg: 'Server error' });
+      }
       res.cookie('token', token, {
         httpOnly: true,
-        secure: false, // Set to true in production
+        secure: process.env.NODE_ENV === 'production', // Set to true in production
         sameSite: 'Lax', // Can also use 'Strict' based on your requirements
         maxAge: 3600 * 1000, // Match the token expiration time
       });
@@ -93,11 +88,31 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Logout route
 router.post('/logout', (req, res) => {
   res.clearCookie('token');
   res.json({ msg: 'Logged out successfully' });
 });
 
-app.use('/api', router);
+// Get user details route
+router.get('/user', async (req, res) => {
+  const token = req.cookies.token;
+  
+  if (!token) {
+    return res.status(401).json({ msg: 'No token, authorization denied' });
+  }
+  
+  try {
+    const decoded = jwt.verify(token, jwtSecret);
+    const user = await User.findById(decoded.user.id).select('-password'); // Exclude password field
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(401).json({ msg: 'Token is not valid' });
+  }
+});
 
 module.exports = router;
