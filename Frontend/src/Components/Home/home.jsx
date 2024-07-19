@@ -9,6 +9,7 @@ const Home = () => {
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
     const [msg, setMsg] = useState('');
+    const [editingId, setEditingId] = useState(null);
 
     const handleChange = (e) => {
         setTodo(e.target.value);
@@ -36,17 +37,30 @@ const Home = () => {
         }
 
         try {
-            const response = await axios.post(
-                'http://localhost:5000/api/todo/add-todo',
-                { email, txtTodo: todo },
-                { withCredentials: true }
-            );
+            if (editingId) {
+                // Update existing to-do
+                await axios.put(
+                    `http://localhost:5000/api/todo/update-todo/${editingId}`,
+                    { txtTodo: todo },
+                    { withCredentials: true }
+                );
+                setMsg('To-do updated successfully.');
+            } else {
+                // Add new to-do
+                await axios.post(
+                    'http://localhost:5000/api/todo/add-todo',
+                    { email, txtTodo: todo },
+                    { withCredentials: true }
+                );
+                setMsg('To-do added successfully.');
+            }
+
             setTodo('');
+            setEditingId(null); // Reset editing mode
             fetchTodos();
-            setMsg('To-do added successfully.');
         } catch (error) {
-            console.error('Error adding todo:', error);
-            setError('Failed to add to-do.');
+            console.error('Error submitting todo:', error);
+            setError('Something gone wrong.');
         }
     };
 
@@ -65,26 +79,11 @@ const Home = () => {
         }
     };
 
-    useEffect(() => {
-        fetchUserDetails();
-        fetchTodos();
-    }, []);
-
-    useEffect(() => {
-        if (email) {
-            fetchUserDetails();
-            fetchTodos();
-        }
-    }, [email]);
-
     const deleteTodo = async (id) => {
+        setError('');
         setMsg('');
         try {
-            await axios.delete(`http://localhost:5000/api/todo/delete-todo/${id}`,
-                { 
-                    withCredentials: true 
-                }
-            );
+            await axios.delete(`http://localhost:5000/api/todo/delete-todo/${id}`, { withCredentials: true });
             setMsg('To-do deleted successfully.');
             fetchTodos();
         } catch (error) {
@@ -93,13 +92,30 @@ const Home = () => {
         }
     };
 
+    const startEditing = (todo) => {
+        setTodo(todo.txtTodo);
+        setEditingId(todo._id);
+    };
+
+    useEffect(() => {
+        fetchUserDetails();
+        fetchTodos();
+    }, []);
+
+    useEffect(() => {
+        if(email){
+            fetchUserDetails();
+            fetchTodos();
+        }
+    }, [email]);
+
     return (
         <>
             <div className="home-container">
-                <span className="title-add-todo">To-Do</span>
+                <span className="title-add-todo">{editingId ? 'Update To-Do' : 'Add To-Do'}</span>
 
                 <form onSubmit={handleSubmit} className="form-auth">
-                    <label htmlFor="add-todo" className="label-add-todo">Add/Update to-do:</label>
+                    <label htmlFor="add-todo" className="label-add-todo">To-Do:</label>
                     <input
                         type="text"
                         name="add-todo"
@@ -109,7 +125,7 @@ const Home = () => {
                         value={todo}
                         onChange={handleChange}
                     />
-                    <button className="btn-add-todo">Save</button>
+                    <button className="btn-add-todo">{editingId ? 'Update' : 'Save'}</button>
                 </form>
             </div>
             <div className="home-container">
@@ -128,7 +144,7 @@ const Home = () => {
                                 <td className="td-th-center">{index + 1}</td>
                                 <td>{item.txtTodo}</td>
                                 <td className="td-th-center">
-                                    <button className="btn-todo-action">Edit</button>
+                                    <button className="btn-todo-action" onClick={() => startEditing(item)}>Edit</button>
                                     <button className="btn-todo-action" onClick={() => deleteTodo(item._id)}>Delete</button>
                                 </td>
                             </tr>
